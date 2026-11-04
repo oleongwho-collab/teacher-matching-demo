@@ -1,0 +1,1352 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="澳門—橫琴合作區教師人力資源配對平台展示原型">
+  <title>澳門—橫琴教師配對平台｜展示原型</title>
+
+  <style>
+    :root {
+      --navy: #16324f;
+      --blue: #2366a8;
+      --blue-light: #eaf3fb;
+      --teal: #1b827a;
+      --teal-light: #e8f5f2;
+      --gold: #d89b3c;
+      --ink: #243447;
+      --muted: #69788a;
+      --line: #e3e9ef;
+      --paper: #ffffff;
+      --background: #f5f8fb;
+      --success: #25815f;
+      --warning: #a96708;
+      --shadow: 0 12px 32px rgba(22, 50, 79, .08);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--background);
+      font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI",
+        "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      line-height: 1.65;
+    }
+
+    button, input, select, textarea { font: inherit; }
+
+    button, a { -webkit-tap-highlight-color: transparent; }
+
+    a { color: inherit; }
+
+    .demo-banner {
+      padding: 8px 16px;
+      color: #614300;
+      background: #fff2cf;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .site-header {
+      position: sticky;
+      z-index: 10;
+      top: 0;
+      border-bottom: 1px solid rgba(227, 233, 239, .9);
+      background: rgba(255, 255, 255, .95);
+      backdrop-filter: blur(12px);
+    }
+
+    .header-inner {
+      width: min(1160px, calc(100% - 36px));
+      min-height: 72px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      color: var(--navy);
+      text-decoration: none;
+      font-weight: 800;
+      line-height: 1.25;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      color: white;
+      background: linear-gradient(145deg, var(--blue), var(--teal));
+      font-size: 20px;
+    }
+
+    .brand small {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .main-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .main-nav a {
+      padding: 9px 12px;
+      border-radius: 10px;
+      color: #435365;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .main-nav a:hover { background: var(--blue-light); color: var(--blue); }
+
+    .nav-cta {
+      padding: 10px 15px !important;
+      color: white !important;
+      background: var(--blue);
+    }
+
+    .container {
+      width: min(1160px, calc(100% - 36px));
+      margin: auto;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 72px 0 64px;
+      background:
+        radial-gradient(circle at 83% 20%, rgba(51, 143, 154, .22), transparent 27%),
+        linear-gradient(125deg, #102e4c, #1b5680 64%, #247b83);
+      color: white;
+    }
+
+    .hero::after {
+      position: absolute;
+      right: -80px;
+      bottom: -235px;
+      width: 520px;
+      height: 520px;
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 50%;
+      content: "";
+      box-shadow: 0 0 0 45px rgba(255,255,255,.035),
+                  0 0 0 90px rgba(255,255,255,.025);
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1.25fr .75fr;
+      align-items: center;
+      gap: 44px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 11px;
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 99px;
+      background: rgba(255,255,255,.1);
+      font-size: 13px;
+    }
+
+    .hero h1 {
+      max-width: 720px;
+      margin: 18px 0;
+      font-size: clamp(34px, 5vw, 55px);
+      line-height: 1.15;
+      letter-spacing: -.03em;
+    }
+
+    .hero p {
+      max-width: 650px;
+      margin: 0;
+      color: rgba(255,255,255,.83);
+      font-size: 17px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .button {
+      display: inline-flex;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 17px;
+      border: 1px solid transparent;
+      border-radius: 11px;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 750;
+      transition: .18s ease;
+    }
+
+    .button:hover { transform: translateY(-1px); }
+
+    .button-light { color: var(--navy); background: white; }
+    .button-outline { border-color: rgba(255,255,255,.55); color: white; background: transparent; }
+    .button-primary { color: white; background: var(--blue); }
+    .button-secondary { border-color: var(--line); color: var(--navy); background: white; }
+    .button-small { min-height: 36px; padding: 7px 12px; font-size: 13px; }
+
+    .hero-card {
+      padding: 23px;
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 20px;
+      background: rgba(255,255,255,.11);
+      box-shadow: 0 18px 50px rgba(0,0,0,.13);
+      backdrop-filter: blur(8px);
+    }
+
+    .hero-card h2 { margin: 0 0 14px; font-size: 18px; }
+
+    .hero-step {
+      display: flex;
+      gap: 12px;
+      padding: 12px 0;
+      border-top: 1px solid rgba(255,255,255,.18);
+    }
+
+    .hero-step-number {
+      flex: 0 0 28px;
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: var(--navy);
+      background: white;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .hero-step strong { display: block; }
+    .hero-step span:last-child { color: rgba(255,255,255,.77); font-size: 13px; }
+
+    .section { padding: 62px 0; }
+    .section-white { background: white; }
+
+    .section-heading {
+      max-width: 720px;
+      margin-bottom: 27px;
+    }
+
+    .section-kicker {
+      color: var(--teal);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .section-heading h2 {
+      margin: 8px 0 9px;
+      color: var(--navy);
+      font-size: clamp(26px, 3vw, 35px);
+      line-height: 1.25;
+    }
+
+    .section-heading p { margin: 0; color: var(--muted); }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: -28px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .stat-card, .card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .stat-card { padding: 20px; }
+    .stat-number { color: var(--navy); font-size: 27px; font-weight: 850; }
+    .stat-label { color: var(--muted); font-size: 13px; }
+
+    .notice {
+      padding: 14px 16px;
+      border: 1px solid #f0dfb9;
+      border-radius: 12px;
+      color: #70500e;
+      background: #fff9e9;
+      font-size: 13px;
+    }
+
+    .filters {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr auto;
+      gap: 10px;
+      margin: 20px 0;
+      padding: 15px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: white;
+    }
+
+    .field, .filters input, .filters select {
+      width: 100%;
+    }
+
+    input, select, textarea {
+      min-height: 42px;
+      padding: 9px 11px;
+      border: 1px solid #d7e0e8;
+      border-radius: 9px;
+      color: var(--ink);
+      background: white;
+    }
+
+    textarea { min-height: 100px; resize: vertical; }
+
+    input:focus, select:focus, textarea:focus {
+      outline: 3px solid rgba(35,102,168,.14);
+      border-color: var(--blue);
+    }
+
+    .jobs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .job-card {
+      display: flex;
+      flex-direction: column;
+      padding: 19px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: white;
+      box-shadow: 0 7px 20px rgba(22,50,79,.045);
+    }
+
+    .job-topline {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .job-card h3 { margin: 10px 0 4px; color: var(--navy); font-size: 18px; }
+    .school-name { color: var(--muted); font-size: 13px; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 8px;
+      border-radius: 99px;
+      color: #236246;
+      background: #e9f6ee;
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .badge-blue { color: #285e92; background: #eaf3fb; }
+    .badge-gold { color: #835a0e; background: #fff2d4; }
+
+    .job-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin: 12px 0;
+    }
+
+    .tag {
+      padding: 4px 8px;
+      border-radius: 7px;
+      color: #53677a;
+      background: #f1f5f8;
+      font-size: 12px;
+    }
+
+    .job-summary {
+      flex: 1;
+      margin: 0 0 16px;
+      color: #536273;
+      font-size: 13px;
+    }
+
+    .job-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding-top: 13px;
+      border-top: 1px solid var(--line);
+    }
+
+    .salary { color: var(--navy); font-size: 13px; font-weight: 800; }
+
+    .empty-state {
+      grid-column: 1 / -1;
+      padding: 30px;
+      border: 1px dashed #cbd6e0;
+      border-radius: 15px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .two-column {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .feature-card { padding: 23px; }
+    .feature-icon {
+      width: 45px;
+      height: 45px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      color: var(--blue);
+      background: var(--blue-light);
+      font-size: 22px;
+    }
+
+    .feature-card h3 { margin: 13px 0 6px; color: var(--navy); }
+    .feature-card p { margin: 0; color: var(--muted); font-size: 14px; }
+
+    .profile-layout {
+      display: grid;
+      grid-template-columns: .85fr 1.15fr;
+      gap: 20px;
+    }
+
+    .profile-card { padding: 24px; }
+    .profile-header { display: flex; gap: 14px; align-items: center; }
+    .avatar {
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      border-radius: 17px;
+      color: white;
+      background: linear-gradient(145deg, #4b8ac2, #32a393);
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .profile-header h3 { margin: 0; color: var(--navy); }
+    .profile-header p { margin: 2px 0 0; color: var(--muted); font-size: 13px; }
+    .profile-list { margin: 17px 0 0; padding: 0; list-style: none; }
+    .profile-list li { padding: 9px 0; border-top: 1px solid var(--line); font-size: 14px; }
+    .profile-list strong { color: var(--navy); }
+
+    .match-card {
+      padding: 20px;
+      border: 1px solid #cfe6df;
+      border-radius: 15px;
+      background: linear-gradient(135deg, #f1fbf8, white);
+    }
+
+    .match-score { color: var(--teal); font-size: 28px; font-weight: 850; }
+    .match-card h3 { margin: 0; color: var(--navy); }
+    .match-card p { color: var(--muted); font-size: 14px; }
+
+    .workflow {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      counter-reset: flow;
+    }
+
+    .workflow-item {
+      position: relative;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: white;
+      counter-increment: flow;
+    }
+
+    .workflow-item::before {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      margin-bottom: 12px;
+      place-items: center;
+      border-radius: 11px;
+      color: white;
+      background: var(--blue);
+      content: counter(flow);
+      font-weight: 800;
+    }
+
+    .workflow-item h3 { margin: 0 0 5px; color: var(--navy); font-size: 16px; }
+    .workflow-item p { margin: 0; color: var(--muted); font-size: 13px; }
+
+    .policy-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .policy-item {
+      padding: 17px;
+      border-radius: 13px;
+      background: var(--blue-light);
+    }
+
+    .policy-item:nth-child(2) { background: var(--teal-light); }
+    .policy-item:nth-child(3) { background: #fff5e3; }
+    .policy-item strong { display: block; color: var(--navy); }
+    .policy-item span { color: var(--muted); font-size: 13px; }
+
+    .form-card { padding: 23px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+    .form-row { display: flex; flex-direction: column; gap: 6px; }
+    .form-row label { color: #435365; font-size: 13px; font-weight: 750; }
+    .form-row.full { grid-column: 1 / -1; }
+    .form-help { color: var(--muted); font-size: 12px; }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .admin-table th, .admin-table td {
+      padding: 13px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      font-size: 13px;
+    }
+
+    .admin-table th { color: var(--navy); background: #f0f5f9; }
+    .admin-table tr:last-child td { border-bottom: 0; }
+
+    .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+    details {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: white;
+    }
+
+    summary { color: var(--navy); cursor: pointer; font-weight: 750; }
+    details p { margin-bottom: 0; color: var(--muted); font-size: 14px; }
+
+    .site-footer {
+      padding: 30px 0;
+      color: rgba(255,255,255,.8);
+      background: #142e48;
+      font-size: 13px;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .footer-inner strong { color: white; }
+    .footer-inner a { color: white; }
+
+    .modal-backdrop {
+      position: fixed;
+      z-index: 30;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(13, 30, 47, .58);
+    }
+
+    .modal-backdrop.open { display: flex; }
+
+    .modal {
+      width: min(620px, 100%);
+      max-height: 88vh;
+      overflow: auto;
+      padding: 24px;
+      border-radius: 18px;
+      background: white;
+      box-shadow: 0 25px 80px rgba(0,0,0,.25);
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .modal-head h2 { margin: 0; color: var(--navy); font-size: 23px; }
+    .modal-close {
+      width: 36px;
+      height: 36px;
+      border: 0;
+      border-radius: 9px;
+      cursor: pointer;
+      background: #f0f4f7;
+      font-size: 20px;
+    }
+
+    .modal-content { color: #536273; font-size: 14px; }
+    .modal-content h3 { margin-bottom: 4px; color: var(--navy); font-size: 15px; }
+    .modal-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 18px; }
+
+    .toast {
+      position: fixed;
+      z-index: 40;
+      right: 20px;
+      bottom: 20px;
+      max-width: min(420px, calc(100% - 40px));
+      padding: 13px 17px;
+      border-radius: 12px;
+      color: white;
+      background: #183b59;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(12px);
+      transition: .22s ease;
+    }
+
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+      .main-nav { gap: 0; }
+      .main-nav a { padding: 8px; font-size: 12px; }
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-card { max-width: 620px; }
+      .jobs-grid { grid-template-columns: repeat(2, 1fr); }
+      .workflow { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 650px) {
+      .header-inner { width: min(100% - 24px, 1160px); min-height: auto; padding: 12px 0; align-items: flex-start; flex-direction: column; gap: 10px; }
+      .main-nav { width: 100%; overflow-x: auto; padding-bottom: 2px; }
+      .main-nav a { flex: 0 0 auto; }
+      .hero { padding: 48px 0; }
+      .container { width: min(100% - 26px, 1160px); }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .section { padding: 46px 0; }
+      .filters { grid-template-columns: 1fr 1fr; }
+      .filters input { grid-column: 1 / -1; }
+      .jobs-grid, .two-column, .profile-layout, .policy-strip, .faq-grid { grid-template-columns: 1fr; }
+      .workflow { grid-template-columns: 1fr 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-row.full { grid-column: auto; }
+      .admin-table { display: block; overflow-x: auto; white-space: nowrap; }
+      .footer-inner { flex-direction: column; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="demo-banner">
+    展示原型｜所有人物、學校、職位及配對均為虛構示例；請勿輸入真實個人資料
+  </div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#top" aria-label="返回首頁">
+        <span class="brand-mark">師</span>
+        <span>
+          澳門—橫琴教師配對平台
+          <small>非高等教育師資流動展示原型</small>
+        </span>
+      </a>
+
+      <nav class="main-nav" aria-label="主導覽">
+        <a href="#jobs">職位列表</a>
+        <a href="#teachers">教師示範</a>
+        <a href="#workflow">平台流程</a>
+        <a href="#schools">學校示範</a>
+        <a href="#admin">管理示範</a>
+        <a class="nav-cta" href="#jobs">瀏覽職位</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-inner">
+        <div>
+          <span class="eyebrow">✦ 教育人才交流・自願配對・雙方選聘</span>
+          <h1>讓教師專業，<br>連接更多教育機會</h1>
+          <p>
+            展示澳門教師與橫琴合作區非高等教育辦學機構的職位資訊及配對流程。
+            教師可了解職位，學校可展示招聘需求；配對只是資訊參考，聘用由雙方自行協商。
+          </p>
+          <div class="hero-actions">
+            <a class="button button-light" href="#jobs">瀏覽示範職位　→</a>
+            <a class="button button-outline" href="#workflow">了解平台流程</a>
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-label="平台概念流程">
+          <h2>平台概念流程</h2>
+          <div class="hero-step">
+            <span class="hero-step-number">1</span>
+            <span><strong>資格與資料準備</strong><span>按相關要求確認可申請的教育階段及科目</span></span>
+          </div>
+          <div class="hero-step">
+            <span class="hero-step-number">2</span>
+            <span><strong>職位資訊配對</strong><span>按任教階段、科目及雙方意願查看機會</span></span>
+          </div>
+          <div class="hero-step">
+            <span class="hero-step-number">3</span>
+            <span><strong>面談及雙方選聘</strong><span>教師與學校自行了解條件並決定是否聘用</span></span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <div class="container">
+      <div class="stats-grid" aria-label="示範平台數據">
+        <div class="stat-card">
+          <div class="stat-number" id="statJobs">6</div>
+          <div class="stat-label">示範職位</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">4</div>
+          <div class="stat-label">示範辦學機構</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">3</div>
+          <div class="stat-label">任教階段類別</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">虛構展示資料</div>
+        </div>
+      </div>
+    </div>
+
+    <section class="section" id="jobs">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-kicker">職位資訊</span>
+          <h2>合作區示範職位</h2>
+          <p>職位內容為虛構示例，用於展示職位查詢、條件篩選及配對介面。</p>
+        </div>
+
+        <div class="notice">
+          <strong>提示：</strong>示範職位不代表真實招聘。正式平台應由相關部門確認教師資格要求及職位資料。
+        </div>
+
+        <div class="filters" role="search">
+          <input id="searchInput" type="search" placeholder="搜尋職位、學校或科目" aria-label="搜尋職位">
+          <select id="stageFilter" aria-label="按任教階段篩選">
+            <option value="">所有任教階段</option>
+            <option value="幼兒教育">幼兒教育</option>
+            <option value="小學教育">小學教育</option>
+            <option value="初中教育">初中教育</option>
+            <option value="高中教育">高中教育</option>
+          </select>
+          <select id="typeFilter" aria-label="按辦學性質篩選">
+            <option value="">所有辦學性質</option>
+            <option value="內地公辦學校">內地公辦學校</option>
+            <option value="內地民辦學校">內地民辦學校</option>
+            <option value="合作辦學機構">合作辦學機構</option>
+          </select>
+          <button class="button button-secondary button-small" id="clearFilters" type="button">清除篩選</button>
+        </div>
+
+        <div class="jobs-grid" id="jobsGrid" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="section section-white" id="teachers">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-kicker">教師端示範</span>
+          <h2>呈現專業背景與任教意願</h2>
+          <p>展示教師如何查看自己的專業資料及可能符合條件的職位。此示例不會提交或儲存個人資料。</p>
+        </div>
+
+        <div class="profile-layout">
+          <article class="card profile-card">
+            <div class="profile-header">
+              <div class="avatar" aria-hidden="true">陳</div>
+              <div>
+                <h3>陳老師（虛構示例）</h3>
+                <p>教師端展示帳戶・澳門</p>
+              </div>
+            </div>
+            <ul class="profile-list">
+              <li><strong>任教階段：</strong>小學教育</li>
+              <li><strong>任教科目：</strong>中文、閱讀教育</li>
+              <li><strong>教學年資：</strong>8 年</li>
+              <li><strong>專業經驗：</strong>課程設計、閱讀活動</li>
+              <li><strong>資格狀態：</strong>示範資料，待主管部門確認</li>
+              <li><strong>跨境意願：</strong>有意了解職位安排</li>
+            </ul>
+            <button class="button button-secondary button-small" type="button" data-demo="profile">
+              模擬更新資料
+            </button>
+          </article>
+
+          <article class="match-card">
+            <div class="match-score">92% 示範吻合度</div>
+            <h3>可能符合：小學中文教師</h3>
+            <p>
+              系統示範依任教階段、科目及專業經驗呈現可能相關職位。
+              此吻合度只是介面示例，不代表正式資格審查結果或聘用承諾。
+            </p>
+            <div class="job-tags">
+              <span class="tag">小學教育</span>
+              <span class="tag">中文</span>
+              <span class="tag">閱讀教育</span>
+            </div>
+            <a class="button button-primary button-small" href="#jobs">查看示範職位</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="workflow">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-kicker">平台流程</span>
+          <h2>由資格準備到雙方選聘</h2>
+          <p>平台提供資訊及配對渠道，不代替資格認定、招聘面試或聘用合同。</p>
+        </div>
+
+        <div class="workflow">
+          <article class="workflow-item">
+            <h3>資格資料確認</h3>
+            <p>了解適用的任教資格、教育階段、科目及所需補充程序。</p>
+          </article>
+          <article class="workflow-item">
+            <h3>教師與學校登記</h3>
+            <p>教師提供專業資料及意願；學校發布具體職位與聘用條件。</p>
+          </article>
+          <article class="workflow-item">
+            <h3>初步配對及面談</h3>
+            <p>按職位條件提供參考資訊，雙方自行決定是否進一步洽談。</p>
+          </article>
+          <article class="workflow-item">
+            <h3>自行確認聘用</h3>
+            <p>教師與學校確認合同、薪酬、工作時間、福利及其他安排。</p>
+          </article>
+        </div>
+
+        <div class="policy-strip" aria-label="政策構想示意">
+          <div class="policy-item">
+            <strong>資格銜接</strong>
+            <span>正式資格及認可程序由有權限部門確認。</span>
+          </div>
+          <div class="policy-item">
+            <strong>人力配對平台</strong>
+            <span>連接教師專業資料與學校真實職位需求。</span>
+          </div>
+          <div class="policy-item">
+            <strong>過渡性支援構想</strong>
+            <span>政策文件提出研究有限期支援；本展示版不受理津貼申請。</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-white" id="schools">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-kicker">學校端示範</span>
+          <h2>展示招聘需求與聘用條件</h2>
+          <p>下方表單只會在目前瀏覽頁面中加入虛構展示職位；重新整理頁面後會恢復初始示例。</p>
+        </div>
+
+        <div class="two-column">
+          <article class="card feature-card">
+            <div class="feature-icon" aria-hidden="true">🏫</div>
+            <h3>學校職位資訊</h3>
+            <p>
+              示範平台可展示辦學性質、任教階段、科目、職位期限、薪酬範圍、
+              工作時間、合同條件、福利及所需資格，協助教師在申請前了解職位。
+            </p>
+            <ul class="profile-list">
+              <li>辦學性質及聘用主體</li>
+              <li>教育階段、科目及工作內容</li>
+              <li>薪酬、工作時間及合同安排</li>
+              <li>社會保障、福利及資格要求</li>
+            </ul>
+          </article>
+
+          <form class="card form-card" id="jobForm">
+            <h3 style="margin-top:0;color:var(--navy)">模擬提交示範職位</h3>
+            <p class="form-help">請使用虛構內容。提交後只在本頁暫時顯示，不會上傳或儲存。</p>
+            <div class="form-grid">
+              <div class="form-row">
+                <label for="schoolName">示範學校名稱</label>
+                <input id="schoolName" required maxlength="60" placeholder="例如：合作區示範學校">
+              </div>
+              <div class="form-row">
+                <label for="jobTitle">職位名稱</label>
+                <input id="jobTitle" required maxlength="60" placeholder="例如：小學數學教師">
+              </div>
+              <div class="form-row">
+                <label for="jobStage">任教階段</label>
+                <select id="jobStage" required>
+                  <option value="">請選擇</option>
+                  <option>幼兒教育</option>
+                  <option>小學教育</option>
+                  <option>初中教育</option>
+                  <option>高中教育</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label for="jobSubject">任教科目</label>
+                <input id="jobSubject" required maxlength="40" placeholder="例如：數學">
+              </div>
+              <div class="form-row">
+                <label for="jobType">辦學性質</label>
+                <select id="jobType" required>
+                  <option value="">請選擇</option>
+                  <option>內地公辦學校</option>
+                  <option>內地民辦學校</option>
+                  <option>合作辦學機構</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label for="jobSalary">示範薪酬範圍</label>
+                <input id="jobSalary" maxlength="40" placeholder="例如：按聘用條件面議">
+              </div>
+              <div class="form-row full">
+                <label for="jobDescription">工作內容／條件摘要</label>
+                <textarea id="jobDescription" maxlength="240" placeholder="請輸入虛構的展示內容"></textarea>
+              </div>
+              <div class="form-row full">
+                <button class="button button-primary" type="submit">加入本頁示範職位</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="admin">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-kicker">管理端示範</span>
+          <h2>審核與狀態管理示意</h2>
+          <p>正式平台可按權限管理學校資料、教師資格狀態及職位刊登狀態；以下僅展示可能的介面。</p>
+        </div>
+
+        <div class="notice" style="margin-bottom:16px">
+          本展示版沒有管理員帳戶，也不會真的核實機構、教師資格或招聘職位。
+        </div>
+
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>示範項目</th>
+              <th>狀態</th>
+              <th>說明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>示範教師資格</td>
+              <td><span class="badge badge-gold">待核實</span></td>
+              <td>須由有權限部門按適用規定確認</td>
+            </tr>
+            <tr>
+              <td>示範學校機構</td>
+              <td><span class="badge badge-gold">待核實</span></td>
+              <td>正式平台可設定機構驗證流程</td>
+            </tr>
+            <tr>
+              <td>示範職位刊登</td>
+              <td><span class="badge badge-blue">展示中</span></td>
+              <td>此頁職位均為虛構內容</td>
+            </tr>
+            <tr>
+              <td>聘用及津貼</td>
+              <td><span class="badge">不適用</span></td>
+              <td>展示版不處理聘用、福利或津貼申請</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section section-white" id="faq">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-kicker">常見問題</span>
+          <h2>關於這個展示網站</h2>
+        </div>
+
+        <div class="faq-grid">
+          <details>
+            <summary>這是真正的招聘平台嗎？</summary>
+            <p>不是。這是展示介面及流程的前端原型，職位及人物資料均為虛構內容。</p>
+          </details>
+          <details>
+            <summary>提交申請或職位後會發生甚麼？</summary>
+            <p>按下按鈕只會顯示模擬提示，或在目前頁面暫時加入示範職位，不會傳送至伺服器。</p>
+          </details>
+          <details>
+            <summary>能否在這裡確認教師資格？</summary>
+            <p>不能。展示版不進行資格審查；資格認可和任教條件應以有權限部門的正式安排為準。</p>
+          </details>
+          <details>
+            <summary>GitHub Pages 上的網站是公開的嗎？</summary>
+            <p>公開 repository 發布的網站通常可供任何人瀏覽。不要在網站或 GitHub 檔案中加入真實個人資料或機密資訊。</p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <strong>澳門—橫琴教師配對平台｜展示原型</strong><br>
+        只供概念展示與介面討論，不構成招聘、資格認可或津貼申請服務。
+      </div>
+      <div>
+        <a href="#top">返回頁首 ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <div class="modal-head">
+        <h2 id="modalTitle">職位詳情</h2>
+        <button class="modal-close" id="closeModal" type="button" aria-label="關閉">×</button>
+      </div>
+      <div class="modal-content" id="modalContent"></div>
+      <div class="modal-actions" id="modalActions"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    // 所有資料均為虛構展示資料；不會連接伺服器或資料庫。
+    const initialJobs = [
+      {
+        id: 1,
+        title: "小學中文教師",
+        school: "橫琴啟航示範學校",
+        type: "內地公辦學校",
+        stage: "小學教育",
+        subject: "中文",
+        salary: "示範：按聘用條件面議",
+        hours: "全職・示範工作安排",
+        contract: "示範合同期限：一年",
+        benefits: "福利及社會保障以正式聘用條件為準",
+        requirements: "具相關任教資格及中文教學經驗；實際要求須按正式職位及主管部門規定確認。",
+        description: "負責小學中文課程教學、閱讀活動設計及學生學習評估。此為虛構職位示例。",
+        tags: ["閱讀教育", "課程設計"]
+      },
+      {
+        id: 2,
+        title: "小學數學教師",
+        school: "合作區明德教育中心",
+        type: "內地民辦學校",
+        stage: "小學教育",
+        subject: "數學",
+        salary: "示範：按聘用條件面議",
+        hours: "全職・示範工作安排",
+        contract: "示範合同期限：兩年",
+        benefits: "福利及社會保障以正式聘用條件為準",
+        requirements: "具相關學科背景；任教資格及其他條件以正式規定及學校要求為準。",
+        description: "負責小學數學教學、校本教材設計及學習支援工作。此為虛構職位示例。",
+        tags: ["數學教育", "教學設計"]
+      },
+      {
+        id: 3,
+        title: "幼兒教育教師",
+        school: "琴澳童樂示範幼兒園",
+        type: "合作辦學機構",
+        stage: "幼兒教育",
+        subject: "幼兒教育",
+        salary: "示範：按聘用條件面議",
+        hours: "全職・示範工作安排",
+        contract: "示範合同期限：一年",
+        benefits: "福利及社會保障以正式聘用條件為準",
+        requirements: "具幼兒教育相關背景及經驗；實際資格要求須依適用規定確認。",
+        description: "負責幼兒活動設計、班級教學及家校溝通。此為虛構職位示例。",
+        tags: ["幼兒發展", "家校合作"]
+      },
+      {
+        id: 4,
+        title: "初中英語教師",
+        school: "橫琴啟航示範學校",
+        type: "內地公辦學校",
+        stage: "初中教育",
+        subject: "英語",
+        salary: "示範：按聘用條件面議",
+        hours: "全職・示範工作安排",
+        contract: "示範合同期限：一年",
+        benefits: "福利及社會保障以正式聘用條件為準",
+        requirements: "具英語相關學科背景及教學能力；具體資格須按正式規定核實。",
+        description: "負責初中英語教學、口語活動及校本課程協作。此為虛構職位示例。",
+        tags: ["英語教學", "課程協作"]
+      },
+      {
+        id: 5,
+        title: "融合教育支援教師",
+        school: "合作區明德教育中心",
+        type: "內地民辦學校",
+        stage: "小學教育",
+        subject: "融合教育",
+        salary: "示範：按聘用條件面議",
+        hours: "全職・示範工作安排",
+        contract: "示範合同期限：一年",
+        benefits: "福利及社會保障以正式聘用條件為準",
+        requirements: "具融合教育或學習支援相關經驗；職位資格要求以正式資料為準。",
+        description: "協助教師設計學習支援策略，並與校內團隊協作。此為虛構職位示例。",
+        tags: ["融合教育", "學生支援"]
+      },
+      {
+        id: 6,
+        title: "高中歷史教師",
+        school: "琴澳人文示範學校",
+        type: "合作辦學機構",
+        stage: "高中教育",
+        subject: "歷史",
+        salary: "示範：按聘用條件面議",
+        hours: "全職・示範工作安排",
+        contract: "示範合同期限：兩年",
+        benefits: "福利及社會保障以正式聘用條件為準",
+        requirements: "具歷史相關學科背景及教學經驗；實際任教資格須依正式規定確認。",
+        description: "負責高中歷史課程教學、專題研習指導及教研活動。此為虛構職位示例。",
+        tags: ["人文教育", "專題研習"]
+      }
+    ];
+
+    let jobs = [...initialJobs];
+
+    const jobsGrid = document.getElementById("jobsGrid");
+    const searchInput = document.getElementById("searchInput");
+    const stageFilter = document.getElementById("stageFilter");
+    const typeFilter = document.getElementById("typeFilter");
+    const modalBackdrop = document.getElementById("modalBackdrop");
+    const modalContent = document.getElementById("modalContent");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalActions = document.getElementById("modalActions");
+    const toastElement = document.getElementById("toast");
+    let toastTimer;
+
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      })[character]);
+    }
+
+    function showToast(message) {
+      toastElement.textContent = message;
+      toastElement.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastElement.classList.remove("show"), 3200);
+    }
+
+    function renderJobs() {
+      const query = searchInput.value.trim().toLowerCase();
+      const stage = stageFilter.value;
+      const type = typeFilter.value;
+
+      const filtered = jobs.filter(job => {
+        const searchable = [
+          job.title, job.school, job.subject, job.stage, job.type,
+          job.description, ...(job.tags || [])
+        ].join(" ").toLowerCase();
+
+        return (!query || searchable.includes(query))
+          && (!stage || job.stage === stage)
+          && (!type || job.type === type);
+      });
+
+      document.getElementById("statJobs").textContent = jobs.length;
+
+      if (!filtered.length) {
+        jobsGrid.innerHTML = `
+          <div class="empty-state">
+            找不到符合條件的示範職位。請調整搜尋文字或篩選條件。
+          </div>`;
+        return;
+      }
+
+      jobsGrid.innerHTML = filtered.map(job => `
+        <article class="job-card">
+          <div class="job-topline">
+            <span class="badge badge-blue">${escapeHtml(job.type)}</span>
+            <span class="badge">示範職位</span>
+          </div>
+          <h3>${escapeHtml(job.title)}</h3>
+          <div class="school-name">${escapeHtml(job.school)}</div>
+          <div class="job-tags">
+            <span class="tag">${escapeHtml(job.stage)}</span>
+            <span class="tag">${escapeHtml(job.subject)}</span>
+            ${(job.tags || []).slice(0, 2).map(tag =>
+              `<span class="tag">${escapeHtml(tag)}</span>`
+            ).join("")}
+          </div>
+          <p class="job-summary">${escapeHtml(job.description)}</p>
+          <div class="job-footer">
+            <span class="salary">${escapeHtml(job.salary)}</span>
+            <button class="button button-primary button-small" type="button"
+              data-job-id="${job.id}">查看詳情</button>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function openJob(jobId) {
+      const job = jobs.find(item => item.id === Number(jobId));
+      if (!job) return;
+
+      modalTitle.textContent = job.title;
+      modalContent.innerHTML = `
+        <p><strong>辦學機構：</strong>${escapeHtml(job.school)}</p>
+        <p><strong>辦學性質：</strong>${escapeHtml(job.type)}</p>
+        <p><strong>任教階段：</strong>${escapeHtml(job.stage)}</p>
+        <p><strong>任教科目：</strong>${escapeHtml(job.subject)}</p>
+        <p><strong>薪酬範圍：</strong>${escapeHtml(job.salary)}</p>
+        <p><strong>工作時間：</strong>${escapeHtml(job.hours)}</p>
+        <p><strong>合同安排：</strong>${escapeHtml(job.contract)}</p>
+        <p><strong>福利提示：</strong>${escapeHtml(job.benefits)}</p>
+        <h3>工作內容</h3>
+        <p>${escapeHtml(job.description)}</p>
+        <h3>示範資格要求</h3>
+        <p>${escapeHtml(job.requirements)}</p>
+        <div class="notice">
+          此職位為虛構展示內容。平台示例不確認教師資格，也不代表學校已作出聘用承諾。
+        </div>
+      `;
+
+      modalActions.innerHTML = `
+        <button class="button button-primary" type="button" id="applyDemo">模擬申請職位</button>
+        <button class="button button-secondary" type="button" id="closeModalBottom">返回職位列表</button>
+      `;
+
+      modalBackdrop.classList.add("open");
+      document.body.style.overflow = "hidden";
+
+      document.getElementById("applyDemo").addEventListener("click", () => {
+        closeModal();
+        showToast("展示操作：已模擬提交申請，沒有傳送或儲存任何資料。");
+      });
+
+      document.getElementById("closeModalBottom").addEventListener("click", closeModal);
+      document.getElementById("closeModal").focus();
+    }
+
+    function closeModal() {
+      modalBackdrop.classList.remove("open");
+      document.body.style.overflow = "";
+    }
+
+    jobsGrid.addEventListener("click", event => {
+      const button = event.target.closest("[data-job-id]");
+      if (button) openJob(button.dataset.jobId);
+    });
+
+    searchInput.addEventListener("input", renderJobs);
+    stageFilter.addEventListener("change", renderJobs);
+    typeFilter.addEventListener("change", renderJobs);
+
+    document.getElementById("clearFilters").addEventListener("click", () => {
+      searchInput.value = "";
+      stageFilter.value = "";
+      typeFilter.value = "";
+      renderJobs();
+    });
+
+    document.getElementById("closeModal").addEventListener("click", closeModal);
+
+    modalBackdrop.addEventListener("click", event => {
+      if (event.target === modalBackdrop) closeModal();
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && modalBackdrop.classList.contains("open")) {
+        closeModal();
+      }
+    });
+
+    document.querySelectorAll("[data-demo='profile']").forEach(button => {
+      button.addEventListener("click", () => {
+        showToast("展示操作：教師資料編輯功能僅供介面示範，沒有資料被儲存。");
+      });
+    });
+
+    document.getElementById("jobForm").addEventListener("submit", event => {
+      event.preventDefault();
+
+      const school = document.getElementById("schoolName").value.trim();
+      const title = document.getElementById("jobTitle").value.trim();
+      const stage = document.getElementById("jobStage").value;
+      const subject = document.getElementById("jobSubject").value.trim();
+      const type = document.getElementById("jobType").value;
+      const salary = document.getElementById("jobSalary").value.trim()
+        || "示範：按聘用條件面議";
+      const description = document.getElementById("jobDescription").value.trim()
+        || "此為使用者輸入的本頁展示職位。";
+
+      jobs.unshift({
+        id: Date.now(),
+        title,
+        school,
+        type,
+        stage,
+        subject,
+        salary,
+        hours: "示範工作安排，實際條件以正式招聘資料為準",
+        contract: "示範合同條件，請以正式資料為準",
+        benefits: "福利及社會保障以正式聘用條件為準",
+        requirements: "此為展示職位；實際任教資格須由有權限部門及聘用機構確認。",
+        description,
+        tags: ["本頁新增示範"]
+      });
+
+      event.target.reset();
+      renderJobs();
+      showToast("示範職位已加入目前頁面；重新整理後不會保留。");
+      document.getElementById("jobs").scrollIntoView({ behavior: "smooth" });
+    });
+
+    renderJobs();
+  </script>
+</body>
+</html>
